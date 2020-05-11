@@ -3,7 +3,7 @@
 module.exports = function(nodecg){
     // perform initialization
     const fs = require('fs');
-    const path = "./bundles/dokapon-scoreboard/saves";
+    const path = "./bundles/dokapon-nodecg/saves";
 
     //replicants
     const saveListReplicant = nodecg.Replicant('save-list');
