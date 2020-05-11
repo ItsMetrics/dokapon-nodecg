@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<style>
+		.monospace {
+			font-family: monospace;
+		}
+	</style>	
+</head>
+<body onload="init()">
+    <select name="weeks" id="weeks" onchange="onWeekSelected(this.value)"></select>
+    
+    <br><br>
+    <label for="player1">Player 1:</label>
+    <input type="text" id="player1" name="player1" style="text-align: right;">
+    <br>
+    <label for="player2">Player 2:</label>
+    <input type="text" id="player2" name="player1" style="text-align: right;">
+    <br>
+    <label for="player3">Player 3:</label>
+    <input type="text" id="player3" name="player1" style="text-align: right;">
+    <br>
+    <label for="player4">Player 4:</label>
+    <input type="text" id="player4" name="player1" style="text-align: right;">
+    <br>
+    <button onclick="saveWeek()">
+    Submit
+    </button>
+    <script src="./netWorth.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<style>
+		.monospace {
+			font-family: monospace;
+		}
+	</style>	
+</head>
+<body onload="getUserData(1)">
+
+	<label for="FileSelector">File Select</label>
+	<select name="FileSelector" id="FileSelector"></select>
+	<button onclick="loadData()">Load File</button>
+	<br>
+	<label for="playerSelect">Player Select</label>
+	<select id="playerSelect" onchange="getUserData(this.value)">
+		<option value="1">Player 1</option>
+		<option value="2">Player 2</option>
+		<option value="3">Player 3</option>
+		<option value="4">Player 4</option>
+	</select>
+	<br><label for="playerName">Name:</label>
+	<input type="text" id="playerName" name="playerName" >
+	<br><label for="playerTempName">Temp Name:</label>
+	<input type="text" id="playerTempName" name="playerTempName">
+	<br>
+	<label for="playerGender">Gender</label>
+	<select name="playerGender" id="playerGender">
+		<option value="male">Male</option>
+		<option value="female">Female</option>
+	</select>
+
+	<br>
+	<label for="jobSelect">Job</label>
+	<select name="jobSelect" id="jobSelect">
+		<option value="Warrior">Warrior</option>
+		<option value="Magician">Magician</option>
+		<option value="Thief">Thief</option>
+		<option value="Cleric">Cleric</option>
+		<option value="Spellsword">Spellsword</option>
+		<option value="Alchemist">Alchemist</option>
+		<option value="Ninja">Ninja</option>
+		<option value="Monk">Monk</option>
+		<option value="Acrobat">Acrobat</option>
+		<option value="RoboKnight">RoboKnight</option>
+		<option value="Hero">Hero</option>
+		<option value="Darkling">Darkling</option>
+	</select>
+	<br>
+	<label for="colorSelect">Color</label>
+	<select name="colorSelect" id="colorSelect">
+		<option value="Red">Red</option>
+		<option value="Blue">Blue</option>
+		<option value="Green">Green</option>
+		<option value="Yellow">Yellow</option>
+		<option value="Pink">Pink</option>
+		<option value="White">White</option>
+		<option value="Black">Black</option>
+	</select>
+	<br>
+	<button onclick="submitData()">Submit Changes</button>
+
+	<script src="playerScore.js"></script>
+
+</body>
+</html>

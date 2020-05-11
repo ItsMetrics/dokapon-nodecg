@@ -1,0 +1,52 @@
+{
+  "name": "dokapon-scoreboard",
+  "version": "0.0.0",
+  "description": "overlay for Dokapon Kingdom scoreboard",
+  "homepage": "",
+  "author": {
+    "name": "Jason Segarra",
+    "email": "jason.m.segarra@gmail.com",
+    "url": " "
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "dokapon",
+    "nodecg",
+    "twitch",
+    "overlay",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "^1.1.1",
+    "dashboardPanels": [
+      {
+        "name": "dokapon-score",
+        "title": "Dokapon Score",
+        "width": 4,
+        "file": "dokapon-score.html",
+        "headerColor": "#525F78"
+      },
+      {
+        "name": "net-worth",
+        "title": "Net Worth Tracker",
+        "width": 4,
+        "file": "net-worth.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1080,
+        "height": 1920
+      }
+    ]
+  },
+  "repository": "https://github.com/ItsMetrics/dokapon-nodecg.git",
+  "license": "MIT"
+}
