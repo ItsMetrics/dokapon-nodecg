@@ -5,6 +5,12 @@ function init()
 {
     preload = new createjs.LoadQueue();
     preloadAssets();
+
+    // HACK - Testing the preloader events
+    var loadingTest = new createjs.LoadQueue();
+    loadingTest.on("fileload", loadPlayerHead);
+    loadingTest.loadFile({id:1, src: "./img/png_faces/Black-F-Acrobat.png"});
+    loadingTest.load();
 }
 
 const MAGIC_NUM_PLAYERS = 4;
@@ -85,6 +91,7 @@ function setLoadBackground(video, border)
 {
     video.loop = true;
     video.autoplay = true;
+    video.muted = true;
     video.play();
     console.log(video);
     var videoBuffer = new createjs.VideoBuffer(video);
@@ -226,8 +233,13 @@ function updatePlayerUI(index)
     }
 
     var filename = createImageFileFromData(parsedData.players[index]);
-    var newImage = new createjs.Bitmap(filename);
-    scoreboardContainers[index].head.image = newImage.image;
+    // TODO - replacing the logic with a preload
+    var loadingTest = new createjs.LoadQueue();
+    loadingTest.on("fileload", loadPlayerHead);
+    loadingTest.loadFile({id:index, src: filename});
+    loadingTest.load();
+    // var newImage = new createjs.Bitmap(filename);
+    // scoreboardContainers[index].head.image = newImage.image;
 }
 
 // TODO - This is a temporary procedure for creating the file name paths
@@ -240,4 +252,11 @@ function createImageFileFromData(playerData)
     filename += playerData.job + ".png"
     //console.log(filename);
     return filename;
+}
+
+
+function loadPlayerHead(event)
+{
+    var newImage = new createjs.Bitmap(event.result);
+    scoreboardContainers[event.item.id].head.image = newImage.image;
 }
