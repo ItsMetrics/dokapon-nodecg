@@ -5,16 +5,10 @@ function init()
 {
     preload = new createjs.LoadQueue();
     preloadAssets();
-
-    // HACK - Testing the preloader events
-    var loadingTest = new createjs.LoadQueue();
-    loadingTest.on("fileload", loadPlayerHead);
-    loadingTest.loadFile({id:1, src: "./img/png_faces/Black-F-Acrobat.png"});
-    loadingTest.load();
 }
 
 const MAGIC_NUM_PLAYERS = 4;
-const MAGIC_NAMEPLATE_OFFSET = 90;
+const MAGIC_NAMEPLATE_OFFSET = 80;
 const MAGIC_INITIAL_OFFSET = 275;
 const MAGIC_SCOREBOARD_INDENT = 45;
 const MAGIC_NAMEPLATE_INDENT = 0;
@@ -33,11 +27,11 @@ function createScoreboardContainers()
     
     // TODO - set this up to create multiple containers in a loop, and set their bounds
     // create the container
-    var scoreboardBackground = new createjs.Bitmap('./img/backgrounds/Element.Frame.png');
+    var scoreboardBackground = new createjs.Bitmap('./img/announcements/bkgTest.png');
     
-    scoreboardBackground.setTransform(0,0,1,.66);
-    scoreboardBackground.x = MAGIC_SCOREBOARD_INDENT - 26;
-    scoreboardBackground.y = MAGIC_INITIAL_OFFSET + 450;
+    //scoreboardBackground.setTransform(0,0,1,.66);
+    scoreboardBackground.x = MAGIC_SCOREBOARD_INDENT + 10;
+    scoreboardBackground.y = MAGIC_INITIAL_OFFSET + 400;
     stage.addChild(scoreboardBackground);
 
     //todo - this should be a customizable size

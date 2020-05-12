@@ -44,6 +44,11 @@
         "file": "index.html",
         "width": 1080,
         "height": 1920
+      },
+      {
+        "file": "announcement-queue.html",
+        "width": 450,
+        "height": 500
       }
     ]
   },
