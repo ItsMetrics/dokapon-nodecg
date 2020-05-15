@@ -1,20 +1,31 @@
 'use strict';
+
+
 var stage;
 var preload;
 
 
 const STAGE_WIDTH = 450;
 const STAGE_HEIGHT = 500;
-const STAGE_X_OFFSET = 50;
+const STAGE_X_OFFSET = STAGE_WIDTH + 50;
 
+
+// Tween stuff
+const TIME_TO_STAGE = 1000;
+
+// references to the objects being displayed and in the queue
+var currentDisplay = null;
+var displayQueue = [];
 function init()
 {
-    preload = new createjs.LoadQueue();
     setUpStage();
 
     // HACK - testing out the staging area idea
     fillVisibleArea();
-    drawToStagingArea();
+    //drawToStagingArea();
+
+    // TESTING THE ACTUAL OBJECTS
+    createWeeklyEvent('abnormousDisaster');
 }
 
 function setUpStage()
@@ -59,7 +70,60 @@ function drawToStagingArea()
     createjs.Ticker.addEventListener("tick", stage);
 }
 
+function buildInStaging(containerToBuild)
+{
+
+}
+
+
+
 function tick(e)
 {
     stage.update()
 }
+
+
+function stageNextElement()
+{
+    if(displayQueue.length == 0)
+    {
+        console.log('staging called with no elements in queue');
+    }
+
+    var item = displayQueue[0];
+    item.x = STAGE_X_OFFSET;
+    item.y = 0;
+
+    stage.addChild(item);
+    createjs.Tween.get(item).to({x:0}, TIME_TO_STAGE, createjs.Ease.backOut);
+}
+
+//#region Weekly Events
+// TODO - move all of this into its own module
+function createWeeklyEvent(eventName)
+{
+    preloadWeeklyAsset(eventName);
+}
+
+function preloadWeeklyAsset(eventName)
+{
+    var filename = './img/announcements/' + eventName+'.png';
+    preload = new createjs.LoadQueue();
+    preload.on("complete", handleWeeklyPreload, this, true);
+    preload.loadFile({id:"weeklyEvent", src: filename});
+    
+}
+
+function handleWeeklyPreload()
+{
+    var container = new createjs.Container();
+    var bmp = new createjs.Bitmap(preload.getResult("weeklyEvent"));
+    bmp.x = 53;
+    bmp.y = 15;
+    container.addChild(bmp);
+    displayQueue.push(container);
+
+    // HACK - just testing the logic here
+    stageNextElement();
+}
+//#endregion
