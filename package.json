@@ -53,5 +53,8 @@
     ]
   },
   "repository": "https://github.com/ItsMetrics/dokapon-nodecg.git",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dmx": "^0.2.4"
+  }
 }
