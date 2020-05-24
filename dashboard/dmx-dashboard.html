@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="dmx-dashboard.css">
+    <meta charset="UTF-8">
+	<style>
+		.monospace {
+			font-family: monospace;
+		}
+	</style>	
+</head>
+<body>
+
+    <button onclick="addFixture()">Add Fixture</button>
+    <div class="flex-container" id="flexboxContainer">
+        <div class="flex-item">
+            <h2> DMX 1</h2><br>
+            <label for="fixture0channel1" id="chan1sliderlabel1">Red</label>
+            <input id="fixture0channel1" type="range" min="0" max="255" value="0" class="slider" oninput="sliderChanged(this)">
+            <input id="fixture0channel1input" type="number" oninput="numberChanged(this)" class="slider-input" ><br>
+            <label for="fixture0channel2" id="chan1sliderlabel2" style="float: left;">Blue</label>
+            <input id="fixture0channel2" type="range" min="0" max="255" value="0" class="slider" oninput="sliderChanged(this)">
+            <input id="fixture0channel2input" type="number" oninput="numberChanged(this)" class="slider-input" ><br>
+            <label for="fixture0channel3" id="chan1sliderlabel3" style="float: left;">Green</label>
+            <input id="fixture0channel3" type="range" min="0" max="255" value="0" class="slider" oninput="sliderChanged(this)">
+            <input id="fixture0channel3input" type="number" oninput="numberChanged(this)" class="slider-input" ><br>
+            <label for="fixture0channel4" id="chan1sliderlabel4" style="float: left;">Dimming</label>
+            <input id="fixture0channel4" type="range" min="0" max="255" value="0" class="slider" oninput="sliderChanged(this)">
+            <input id="fixture0channel4input" type="number" oninput="numberChanged(this)" class="slider-input" ><br>
+        </div>
+        <div class="flex-item">
+            Darkness
+        </div>
+    </div>
+    <script src="dmx-dashboard.js"></script>
+</body>
+</html>

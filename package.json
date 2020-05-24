@@ -37,6 +37,12 @@
         "width": 4,
         "file": "net-worth.html",
         "headerColor": "#525F78"
+      },
+      {
+        "name": "dmx-dashboard",
+        "title": "DMX Lighting Dashboard",
+        "file": "dmx-dashboard.html",
+        "fullbleed": true
       }
     ],
     "graphics": [
