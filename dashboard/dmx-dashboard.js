@@ -43,7 +43,7 @@ function addFixture()
         // Label
         var label = document.createElement('label');
         label.for = fixtureString + itemString;
-        label.style = "float: left;";
+        //label.style = "float: left;";
         label.innerText = fixtureToAdd.channels[i];
 
         itemContainer.appendChild(label);
@@ -67,6 +67,7 @@ function addFixture()
         input.id = fixtureString + itemString + "input";
         input.type = 'number';
         input.classList.add('slider-input');
+        input.value = 0;
         input.oninput = function(input) {
             numberChanged(input.srcElement);
         };

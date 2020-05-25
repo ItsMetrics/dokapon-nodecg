@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="dmx-dashboard.css">
+    <link rel="stylesheet" href="add-fixture.css">
     <meta charset="UTF-8">
 	<style>
 		.monospace {
@@ -10,5 +10,31 @@
 	</style>	
 </head>
 <body>
+    <div class="dialog-background">
+        <div class="input-field">
+            <label id="fixtureNameLabel"> Fixture Name:</label>
+            <input type="text" name="fixtureName" id="fixtureName"> <br>
+        </div>
+        <div class="input-field">
+            <label for="fixtureAddress"> Fixture Address:</label>
+            <input type="text" name="fixtureAddress" id="fixtureAddress">
+        </div>
+        <div class="input-field">
+            <label for="channelSelect">Number of Channels</label>
+            <select name="channelSelect" id="channelSelect" onchange="onNumberChannels()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </select>
+        </div>
+        <div id="channel-name-collection">
+
+        </div>
+    </div>
+    <script src="add-fixture.js"></script>
 </body>
 </html>

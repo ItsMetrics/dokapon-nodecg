@@ -1,0 +1,17 @@
+.dialog-background {
+    background-color: rgba(70, 74, 102, 0.822);
+    justify-content: right;
+}
+.input-field {
+    padding: 7px;
+    display: block;
+}
+.dialog-background > label
+{
+    float: left;
+}
+.dialog-background > input {
+    width: max-content;
+    position: relative;
+}
+

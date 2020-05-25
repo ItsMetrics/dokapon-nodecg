@@ -14,14 +14,19 @@
     direction: rtl;
 }
 
+.flex-container > .flex-item > h2 {
+    text-align: center;
+}
 .flex-container > .flex-item > label {
     float: left;
+    
 }
 
 .slider {
     direction: ltr;
 }
 .slider-input {
-    width: 55px;
+    width: 37px;
     float: right;
+    padding: 5px;
 }
