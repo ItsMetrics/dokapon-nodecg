@@ -1,5 +1,6 @@
 'use strict';
 
+
 var fixtures = [];
 
 // document elements
@@ -17,11 +18,16 @@ function fakeFixture()
 
 // TODO - is it innerHTML or innerText we want?
 
-function addFixture()
+function addFixture(fixtureIn = null)
 {
-    // HACK - faking the data for the test
-    var fixtureToAdd = fakeFixture();
-
+    var fixtureToAdd
+    if(fixtureIn == null)
+    {
+        // HACK - faking the data for the test
+        fixtureToAdd = fakeFixture();
+    }
+    // TODO - refactor this to just use the param
+    fixtureToAdd = fixtureIn;
     // add fixture to list
     fixtures.push(fixtureToAdd);
     
@@ -104,3 +110,20 @@ function numberChanged(input)
     var sliderElement = document.getElementById(split[0]);
     sliderElement.value = document.getElementById(input.id).value;
 }
+
+console.log('HERE');
+var lastReceivedFixture; 
+nodecg.listenFor('new-fixture', (fixture, ack) => {
+    if(JSON.stringify(fixture) === JSON.stringify(lastReceivedFixture))
+    {
+        console.log('duplicate message received');        
+    }
+    else
+    {
+        console.log('received fixture in main page');
+        console.log(fixture);
+        lastReceivedFixture = fixture;
+        addFixture(fixture);
+    }
+});
+

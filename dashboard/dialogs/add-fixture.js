@@ -2,6 +2,8 @@
 
 const channelSelection = document.getElementById('channelSelect');
 const channelNameHolder = document.getElementById('channel-name-collection');
+const fixtureAddress = document.getElementById('fixtureAddress');
+const fixtureName = document.getElementById('fixtureName');
 function onNumberChannels()
 {
     // empty out the existing list
@@ -40,7 +42,32 @@ function onNumberChannels()
 function init()
 {
     // Whatever setup we have
+    fixtureName.value = '';
+    fixtureAddress.value = 0;
+    channelSelection.value = '1';
     onNumberChannels();
+}
+
+function createFixtureFromElements()
+{
+    // is there a better way to do this
+    var channelArray = [];
+    var numChannels = parseInt(channelSelection.value);
+    for(var i = 0; i < numChannels; ++i)
+    {
+        var id = i + 1;
+        var inputId = 'channel' + id + 'input';
+        var value = document.getElementById(inputId).value;
+        channelArray.push(value);
+    }
+
+    var newFixture = {
+        name : fixtureName.value,
+        address : fixtureAddress.value,
+        channels : channelArray
+    };
+    nodecg.sendMessage('new-fixture', newFixture);
+    console.log('Sending Message');
 }
 
 
@@ -53,7 +80,7 @@ document.addEventListener('dialog-opened', function() {
 // called when we are confirming
 document.addEventListener('dialog-confirmed', function()
 {
-    console.log('Save Was clicked');
+    createFixtureFromElements();
 });
 // called upon dismiss
 document.addEventListener('dialog-dismissed', function() {
