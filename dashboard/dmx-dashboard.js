@@ -56,8 +56,23 @@ function addFixture()
         slider.max = 255;
         slider.value = 0;
         slider.classList.add("slider");
+        slider.oninput = function(slider) {
+            sliderChanged(slider.srcElement);
+        };
 
         itemContainer.appendChild(slider);
+
+        // number box
+        var input = document.createElement("input");
+        input.id = fixtureString + itemString + "input";
+        input.type = 'number';
+        input.classList.add('slider-input');
+        input.oninput = function(input) {
+            numberChanged(input.srcElement);
+        };
+
+
+        itemContainer.appendChild(input);
 
         // br
         itemContainer.appendChild(document.createElement('br'));

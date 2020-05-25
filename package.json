@@ -43,6 +43,23 @@
         "title": "DMX Lighting Dashboard",
         "file": "dmx-dashboard.html",
         "fullbleed": true
+      },
+      {
+        "name": "add-fixture",
+        "title": "Add Fixture",
+        "width": 4,
+        "dialog": true,
+        "dialogButtons": [
+          {
+            "name": "save",
+            "type": "confirm"
+          },
+          {
+            "name": "cancel",
+            "type": "dismiss"
+          }
+        ],
+        "file":"/dialogs/add-fixture.html"
       }
     ],
     "graphics": [
