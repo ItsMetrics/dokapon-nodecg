@@ -20,16 +20,22 @@ function fakeFixture()
 
 function addFixture(fixtureIn = null)
 {
-    var fixtureToAdd
-    if(fixtureIn == null)
+    var fixtureToAdd;
+    if(!fixtureIn)
     {
         // HACK - faking the data for the test
         fixtureToAdd = fakeFixture();
     }
-    // TODO - refactor this to just use the param
+    else
+    {
     fixtureToAdd = fixtureIn;
+    }
+    // TODO - refactor this to just use the param
     // add fixture to list
     fixtures.push(fixtureToAdd);
+
+    // string builder
+    var fixtureString = "fixture" + fixtures.length;
     
     // create html elements
     var itemContainer = document.createElement("div");
@@ -39,10 +45,23 @@ function addFixture(fixtureIn = null)
     header.innerText = fixtureToAdd.name;
     itemContainer.appendChild(header);
     itemContainer.appendChild(document.createElement('br'));
+    
     // TODO - need to add an address field
+    var addressLabel = document.createElement('label');
+    addressLabel.for = fixtureString + 'address';
+    addressLabel.innerText = "Address: ";
+    addressLabel.classList.add('address-label');
+    itemContainer.appendChild(addressLabel);
 
-    // string builder
-    var fixtureString = "fixture" + fixtures.length;
+    var addressInput = document.createElement('input');
+    addressInput.type = 'number';
+    addressInput.value = 0;
+    addressInput.id = fixtureString + 'address';
+    addressInput.classList.add('address-input');
+    itemContainer.appendChild(addressInput);
+    itemContainer.appendChild(document.createElement('br'));
+
+    
     for(var i = 0; i < fixtureToAdd.channels.length; ++i)
     {
         var itemString = "channel" + i+1;

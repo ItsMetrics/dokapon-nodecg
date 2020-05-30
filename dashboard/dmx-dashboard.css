@@ -30,3 +30,11 @@
     float: right;
     padding: 5px;
 }
+
+.address-label {
+    direction: ltr;
+}
+
+.address-input {
+    vertical-align: middle;
+}
