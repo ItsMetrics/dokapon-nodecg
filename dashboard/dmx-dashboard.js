@@ -23,6 +23,7 @@ function fakeFixture()
     var fakeFixture = {};
     fakeFixture.name = "Faked Data".concat(fixtures.length + 1);
     fakeFixture.channels = ["red", "blue", "green", "dimming"];
+    fakeFixture.values = [0,0,0,0];
     fakeFixture.address = 1;
     return fakeFixture;
 }
@@ -86,7 +87,7 @@ function createFixtureElements(fixtureString, fixtureToAdd)
     
     for(var i = 0; i < fixtureToAdd.channels.length; ++i)
     {
-        var itemString = "channel" + i+1;
+        var itemString = "channel".concat(i+1);
         // Label
         var label = document.createElement('label');
         label.for = fixtureString + itemString;
@@ -101,7 +102,7 @@ function createFixtureElements(fixtureString, fixtureToAdd)
         slider.type = 'range';
         slider.min = 0;
         slider.max = 255;
-        slider.value = 0;
+        slider.value = fixtureToAdd.values[i];
         slider.classList.add("slider");
         slider.oninput = function(slider) {
             sliderChanged(slider.srcElement);
@@ -114,7 +115,7 @@ function createFixtureElements(fixtureString, fixtureToAdd)
         input.id = fixtureString + itemString + "input";
         input.type = 'number';
         input.classList.add('slider-input');
-        input.value = 0;
+        input.value = fixtureToAdd.values[i];
         input.oninput = function(input) {
             numberChanged(input.srcElement);
         };
@@ -158,7 +159,7 @@ function addressChanged(address)
     console.log(index);
     console.log(fixtures[index]);
     // update the fixture value
-    fixtures[index].address = document.getElementById(address.id).value;
+    fixtures[index].address = parseInt(document.getElementById(address.id).value);
 }
 var lastReceivedFixture; 
 nodecg.listenFor('new-fixture', (fixture, ack) => {
@@ -265,5 +266,41 @@ function saveData()
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
     }, 0);
+}
+//#endregion
+
+//#region Scenes
+
+// Gather all of the lighting data for each fixture
+// TODO - this is fucking hideous, need to solve the data binding problem
+function fillLightingData()
+{
+    // Get the list of items
+    var items = document.getElementsByClassName('flex-item');
+    for(let i = 0; i < items.length; ++i)
+    {
+        let item = items[i];
+        var values = item.getElementsByClassName('slider');
+        for(let j = 0; j < values.length; ++j)
+        {
+            fixtures[i].values[j] = values[j].value;
+        }
+    }
+    console.log(fixtures);
+    createSceneData();
+}
+
+function createSceneData()
+{
+    var sceneData = {};
+    for(let i = 0; i < fixtures.length; ++i)
+    {
+        let start = fixtures[i].address;
+        for(let j = 0; j < fixtures[i].values.length; ++j)
+        {
+            sceneData[start + j] = parseInt(fixtures[i].values[j]);
+        }
+    }
+    console.log(sceneData);
 }
 //#endregion

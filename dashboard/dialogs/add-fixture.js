@@ -52,6 +52,7 @@ function createFixtureFromElements()
 {
     // is there a better way to do this
     var channelArray = [];
+    var valueArray = [];
     var numChannels = parseInt(channelSelection.value);
     for(var i = 0; i < numChannels; ++i)
     {
@@ -59,12 +60,14 @@ function createFixtureFromElements()
         var inputId = 'channel' + id + 'input';
         var value = document.getElementById(inputId).value;
         channelArray.push(value);
+        valueArray.push(0);
     }
 
     var newFixture = {
         name : fixtureName.value,
         address : fixtureAddress.value,
-        channels : channelArray
+        channels : channelArray,
+        values: valueArray
     };
     nodecg.sendMessage('new-fixture', newFixture);
     console.log('Sending Message');
