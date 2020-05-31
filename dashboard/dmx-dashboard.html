@@ -9,9 +9,14 @@
 		}
 	</style>	
 </head>
-<body>
-
-    <button onclick="addFixture()">Add Fixture</button>
+<body onload="Init()">
+    <label for="fileInput">Load Config</label>
+    <input type="file" id="fileInput">
+    <progress id="fileProgress" max="100" value="0" hidden></progress>
+    <br>
+    <button onclick="saveData()">Save Config</button>
+    <br>
+    <button onclick="addFixture()">Add Faked Fixture</button>
     <button nodecg-dialog="add-fixture">Add Fixture Dialog</button>
     <div class="flex-container" id="flexboxContainer">
     </div>
