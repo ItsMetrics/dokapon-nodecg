@@ -33,8 +33,14 @@
     background-color: #1C2541;
     margin: 10px;
     padding: 20px;
-    font-size: 30px;
+    font-size: 20px;
     display: block;
+    direction: rtl;
+}
+.scene-item > label
+{
+    float: left;
+    direction: ltr;
 }
 
 .scene-name {
@@ -42,8 +48,10 @@
     color: #5BC0BE;
     border: 0;
     outline: 0;
+    font-size: 20px;
     border-bottom: 1px solid black;
-    
+    justify-self: right;
+    direction: ltr;
 }
 .slider {
     direction: ltr;
