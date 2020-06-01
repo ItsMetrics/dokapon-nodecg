@@ -8,6 +8,7 @@ const fixtureReplicant = nodecg.Replicant('fixture-list');
 
 // document elements
 const flexContainer = document.getElementById('flexboxContainer');
+const sceneContainer = document.getElementById('sceneContainer');
 const fileProgress = document.getElementById('fileProgress');
 
 var reader;
@@ -48,7 +49,7 @@ function addFixture(fixtureIn = null)
     fixtureReplicant.value = fixtures;
 
     // string builder
-    var fixtureString = "fixture" + fixtures.length;
+    var fixtureString = "fixture" + (fixtures.length - 1);
     
     createFixtureElements(fixtureString, fixtureToAdd);
     
@@ -59,6 +60,7 @@ function createFixtureElements(fixtureString, fixtureToAdd)
 {
     // create html elements
     var itemContainer = document.createElement("div");
+    itemContainer.id = fixtureString;
     itemContainer.classList.add("flex-item");
 
     var header = document.createElement("h2");
@@ -134,22 +136,42 @@ function createFixtureElements(fixtureString, fixtureToAdd)
 // Handle the input/slider combinations
 function sliderChanged(slider)
 {
-    console.log(slider);
     var sliderElement = document.getElementById(slider.id);
-    console.log(sliderElement.value);
 
     // find the element that belongs to this group
     var inputText = slider.id+"input";
     var input = document.getElementById(inputText);
     input.value = sliderElement.value;
+
+    // HACK- Terrible Data binding
+
+    var parentId = parseInt(sliderElement.parentNode.id.split('fixture')[1]);
+    var channelId = parseInt(slider.id.split('channel')[1]);
+
+    channelToData(parentId, channelId, input.value);
 }
 
 function numberChanged(input)
 {
-    console.log(input);
     var split = input.id.split('input');
     var sliderElement = document.getElementById(split[0]);
     sliderElement.value = document.getElementById(input.id).value;
+
+    // HACK- Terrible Data binding
+    var parentId = parseInt(sliderElement.parentNode.id.split('fixture')[1]);
+    var channelId = parseInt(split[0].split('channel')[1]);
+
+    channelToData(parentId, channelId, sliderElement.value);
+}
+// Terrible data binding
+function channelToData(parentId, channelId, value)
+{
+    console.log(parentId);
+    console.log(channelId);
+
+    var fixedId = channelId - 1;
+    // update the data
+    fixtures[parentId].values[fixedId] = value;
 }
 
 function addressChanged(address)
@@ -216,15 +238,21 @@ function onFileProgress()
     }
 }
 
-
-function handleParsedData(data)
+function clearFixtures()
 {
     // clear out the existing elements.
     flexContainer.innerHTML = '';
     fixtures = [];
+}
 
-    fixtures = data.fixtures;
-    // TODO - recreate all the fixtures
+function handleParsedData(data)
+{
+    replaceFixtures(data.fixtures);
+}
+
+function replaceFixtures(fixtures)
+{
+    clearFixtures();
     for(let i = 0; i < fixtures.length; ++i)
     {
         //create the fixture string
@@ -271,6 +299,9 @@ function saveData()
 
 //#region Scenes
 
+// HACK - just storing the scene as a collection of fixtures. This isn't how we should be handling it, but it 
+//  will save a lot of time in pairing data back and forth between the outputs.
+
 // Gather all of the lighting data for each fixture
 // TODO - this is fucking hideous, need to solve the data binding problem
 function fillLightingData()
@@ -302,5 +333,70 @@ function createSceneData()
         }
     }
     console.log(sceneData);
+    console.log(sceneData.length);
+}
+
+// Itterate through the fixtures to update the scene controls
+function updateFixturesToScene(scene)
+{
+    replaceFixtures(scene.fixtures);
+}
+
+function createSceneWithCurrent(name, trigger)
+{
+    let scene = 
+    {
+        name : name,
+        trigger : trigger,
+        fixtures : fixtures
+    }
+    createSceneElement(scene);
+    scenes.push(scene);
+    return scene;
+}
+
+function createSceneElement(scene)
+{
+    var sceneId = "scene".concat(scenes.length);
+    var item = document.createElement('div');
+    item.classList.add('scene-item');
+    item.id = sceneId
+
+    var nameLabel = document.createElement('label');
+    nameLabel.for = sceneId.concat('name');
+    nameLabel.innerText = "Name:";
+    item.appendChild(nameLabel);
+
+    var nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.value = scene.name;
+    nameInput.id = sceneId.concat('name');
+    nameInput.classList.add('scene-name');
+    item.appendChild(nameInput);
+
+    // Break
+    item.appendChild(document.createElement('br'));
+
+    var triggerLabel = document.createElement('label');
+    triggerLabel.for = sceneId.concat('trigger');
+    triggerLabel.innerText = "Trigger:"
+    item.appendChild(triggerLabel);
+
+    var triggerInput = document.createElement('input');
+    triggerInput.type = 'text';
+    triggerInput.value = scene.trigger;
+    triggerInput.id = sceneId.concat('trigger');
+    triggerInput.classList.add('scene-name');
+    item.appendChild(triggerInput);
+
+    //add it to the collection
+    sceneContainer.appendChild(item);
+}
+
+function createTestScene()
+{
+    var scene = createSceneWithCurrent('testScene', 'default');
+    console.log(scene);
+    console.log(scenes);
 }
 //#endregion
