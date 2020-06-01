@@ -22,6 +22,29 @@
     
 }
 
+.scene-container {
+    background-color: #0B132B;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.scene-item {
+    background-color: #1C2541;
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+    display: block;
+}
+
+.scene-name {
+    background-color: transparent;
+    color: #5BC0BE;
+    border: 0;
+    outline: 0;
+    border-bottom: 1px solid black;
+    
+}
 .slider {
     direction: ltr;
 }
