@@ -151,8 +151,17 @@ function sliderChanged(slider)
     channelToData(parentId, channelId, input.value);
 }
 
+function clampValue(input, min, max)
+{
+    return Math.min(Math.max(input, min), max);
+}
+
 function numberChanged(input)
 {
+    // clamping the values
+    var me = document.getElementById(input.id);
+    me.value = clampValue(me.value, 0, 255);
+
     var split = input.id.split('input');
     var sliderElement = document.getElementById(split[0]);
     sliderElement.value = document.getElementById(input.id).value;
@@ -166,9 +175,6 @@ function numberChanged(input)
 // Terrible data binding
 function channelToData(parentId, channelId, value)
 {
-    console.log(parentId);
-    console.log(channelId);
-
     var fixedId = channelId - 1;
     // update the data
     fixtures[parentId].values[fixedId] = value;
@@ -203,8 +209,6 @@ nodecg.listenFor('new-fixture', (fixture, ack) => {
 //Event Handler
 const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener("change", handleFile, false);
-
-reader = null;
 
 function handleFile()
 {
@@ -248,17 +252,20 @@ function clearFixtures()
 function handleParsedData(data)
 {
     replaceFixtures(data.fixtures);
+    replaceScenes(data.scenes);
 }
 
-function replaceFixtures(fixtures)
+function replaceFixtures(newFixtures)
 {
     clearFixtures();
-    for(let i = 0; i < fixtures.length; ++i)
+    
+    for(let i = 0; i < newFixtures.length; ++i)
     {
         //create the fixture string
         let fixtureString = "fixture" + i;
-        let currentFixture = fixtures[i];
+        let currentFixture = newFixtures[i];
         createFixtureElements(fixtureString, currentFixture);
+        fixtures.push(currentFixture);
     }
 }
 
@@ -268,7 +275,8 @@ function serializeFixtureData()
     // TODO - should this handle both directions?
     // Get the fixtures data
     var serializedData = {
-        fixtures: fixtures
+        fixtures: fixtures,
+        scenes : scenes
     }
      
     // TODO - serialize all the other data
@@ -344,22 +352,27 @@ function updateFixturesToScene(scene)
 
 function createSceneWithCurrent(name, trigger)
 {
+    let copiedFixtures = deepCopyFunction(fixtures);
     let scene = 
     {
         name : name,
         trigger : trigger,
-        fixtures : fixtures
+        fixtures : copiedFixtures
     }
-    createSceneElement(scene);
+    var sceneId = "scene".concat(scenes.length);
+    createSceneElement(sceneId, scene);
     scenes.push(scene);
     return scene;
 }
 
-function createSceneElement(scene)
+function createSceneElement(sceneId, scene)
 {
-    var sceneId = "scene".concat(scenes.length);
+    
     var item = document.createElement('div');
     item.classList.add('scene-item');
+    item.onclick = function(event) {
+        onSceneSelect(sceneId);
+    };
     item.id = sceneId
 
     var nameLabel = document.createElement('label');
@@ -372,6 +385,10 @@ function createSceneElement(scene)
     nameInput.value = scene.name;
     nameInput.id = sceneId.concat('name');
     nameInput.classList.add('scene-name');
+    nameInput.onchange = function(event)
+    {
+        onNameChanged(event.srcElement);
+    };
     item.appendChild(nameInput);
 
     // Break
@@ -387,16 +404,82 @@ function createSceneElement(scene)
     triggerInput.value = scene.trigger;
     triggerInput.id = sceneId.concat('trigger');
     triggerInput.classList.add('scene-name');
+    triggerInput.onchange = function(event)
+    {
+        onTriggerChanged(event.srcElement);
+    };
     item.appendChild(triggerInput);
 
     //add it to the collection
     sceneContainer.appendChild(item);
 }
 
+function clearScenes()
+{
+    sceneContainer.innerHTML = '';
+    scenes = [];
+}
+
+function replaceScenes(newScenes)
+{
+    clearScenes();
+
+    for(let i = 0; i < newScenes.length; ++i)
+    {
+        let sceneString = "scene".concat(i);
+        createSceneElement(sceneString, newScenes[i]);
+        scenes.push(newScenes[i]);
+    }
+}
+
 function createTestScene()
 {
-    var scene = createSceneWithCurrent('testScene', 'default');
+    var scene = createSceneWithCurrent('New Scene', 'default');
     console.log(scene);
     console.log(scenes);
+}
+
+function onNameChanged(nameItem)
+{
+    var sceneId = parseInt(nameItem.parentNode.id.replace(/[^0-9]/g,''));
+    scenes[sceneId].name = nameItem.value;
+}
+
+function onTriggerChanged(triggerItem)
+{
+    var sceneId = parseInt(triggerItem.parentNode.id.replace(/[^0-9]/g,''));
+    scenes[sceneId].trigger = triggerItem.value;
+}
+
+function onSceneSelect(sceneId)
+{
+    var id = parseInt(sceneId.split('scene')[1]);
+    var selectedScene = scenes[id];
+
+    // HACK - just replace the fixture en masse, we should be setting the values of the fixtures instead.
+    replaceFixtures(selectedScene.fixtures);
+
+}
+
+
+// HACK - this is what happens when you cant require() in an iframe
+const deepCopyFunction = (inObject) => {
+    let outObject, value, key;
+    
+    if (typeof inObject !== "object" || inObject === null) {
+        return inObject // Return the value if inObject is not an object
+    }
+
+    // Create an array or object to hold the values
+    outObject = Array.isArray(inObject) ? [] : {};
+
+    for (key in inObject) {
+        value = inObject[key];
+
+        // Recursively (deep) copy for nested objects, including arrays
+        outObject[key] = deepCopyFunction(value);
+    }
+
+    return outObject;
 }
 //#endregion
