@@ -69,6 +69,18 @@
     vertical-align: middle;
 }
 
+.button-container {
+    direction: ltr;
+}
+
+/*.update-scene {
+
+}
+
+.remove-scene {
+
+}*/
+
 /*Stylizing the Sliders! */
 input[type=range] {
     -webkit-appearance: none;

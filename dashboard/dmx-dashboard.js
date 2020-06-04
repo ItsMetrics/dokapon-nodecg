@@ -55,6 +55,14 @@ function addFixture(fixtureIn = null)
     
 }
 
+function removeFixture(fixtureID)
+{
+    var id = parseInt(fixtureID.split('fixture')[1]);
+    fixtures.splice(id,1);
+
+    // update the fixture list
+    replaceFixtures(fixtures);
+}
 
 function createFixtureElements(fixtureString, fixtureToAdd)
 {
@@ -128,6 +136,14 @@ function createFixtureElements(fixtureString, fixtureToAdd)
         // br
         itemContainer.appendChild(document.createElement('br'));
     }
+    //Remove fixture button
+    var removeButton = document.createElement('button');
+    removeButton.classList.add('remove-fixture');
+    removeButton.onclick = function(event) {
+        removeFixture(fixtureString);
+    };
+    removeButton.innerText = 'Remove';
+    itemContainer.appendChild(removeButton);
 
     //add the element to the document
     flexContainer.appendChild(itemContainer);
@@ -367,7 +383,7 @@ function createSceneWithCurrent(name, trigger)
 
 function createSceneElement(sceneId, scene)
 {
-    
+    // Container for the flexbox
     var item = document.createElement('div');
     item.classList.add('scene-item');
     item.onclick = function(event) {
@@ -375,6 +391,7 @@ function createSceneElement(sceneId, scene)
     };
     item.id = sceneId
 
+    // Name
     var nameLabel = document.createElement('label');
     nameLabel.for = sceneId.concat('name');
     nameLabel.innerText = "Name:";
@@ -394,6 +411,7 @@ function createSceneElement(sceneId, scene)
     // Break
     item.appendChild(document.createElement('br'));
 
+    // Trigger
     var triggerLabel = document.createElement('label');
     triggerLabel.for = sceneId.concat('trigger');
     triggerLabel.innerText = "Trigger:"
@@ -410,6 +428,31 @@ function createSceneElement(sceneId, scene)
     };
     item.appendChild(triggerInput);
 
+    item.appendChild(document.createElement('br'));
+
+    // button container
+    var buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+
+    // Update scene with current data
+    var update = document.createElement('button');
+    update.innerText = 'Update'
+    update.onclick = function(event) {
+        updateSceneWithCurrent(sceneId);
+    };
+    update.classList.add('update-scene');
+    buttonContainer.appendChild(update);
+
+    // remove scene
+    var remove = document.createElement('button');
+    remove.innerText = 'Remove Scene';
+    remove.onclick = function(event) {
+        removeScene(sceneId);
+    };
+    remove.classList.add('remove-scene');
+    buttonContainer.appendChild(remove);
+
+    item.appendChild(buttonContainer);
     //add it to the collection
     sceneContainer.appendChild(item);
 }
@@ -481,5 +524,21 @@ const deepCopyFunction = (inObject) => {
     }
 
     return outObject;
+}
+
+function updateSceneWithCurrent(sceneId)
+{
+    var id = parseInt(sceneId.split('scene')[1]);
+}
+
+function removeScene(sceneId)
+{
+    var id = parseInt(sceneId.split('scene')[1]);
+
+    // splice out the scene at this id
+    scenes.splice(id,1);
+    // recreate and replace the elements ( since IDs have changed )
+    replaceScenes(scenes);
+
 }
 //#endregion
