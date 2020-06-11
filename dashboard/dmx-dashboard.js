@@ -342,7 +342,7 @@ function fillLightingData()
         }
     }
     console.log(fixtures);
-    createSceneData();
+    return createSceneData();
 }
 
 function createSceneData()
@@ -357,7 +357,7 @@ function createSceneData()
         }
     }
     console.log(sceneData);
-    console.log(sceneData.length);
+    return sceneData;
 }
 
 // Itterate through the fixtures to update the scene controls
@@ -540,5 +540,14 @@ function removeScene(sceneId)
     // recreate and replace the elements ( since IDs have changed )
     replaceScenes(scenes);
 
+}
+//#endregion
+
+
+//#region Lights testing
+function SendLightsData()
+{
+    var lightData = fillLightingData();
+    nodecg.sendMessage('updateLights', lightData);
 }
 //#endregion
